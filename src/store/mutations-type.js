@@ -1,0 +1,6 @@
+export const ADDCONDITION = 'add_condition'
+export const REMOVECONDITION = 'remove_condition'
+export const ADDTASK = 'add_task'
+export const REMOVETASK = 'remove_task'
+export const ADDACTION = 'add_action'
+export const REMOVEACTION = 'remove_action'

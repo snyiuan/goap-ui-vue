@@ -1,28 +1,68 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <a-layout>
+      <a-layout-header
+        :style="{
+          width: '100%',
+          position: 'fixed',
+          'text-align': 'center',
+          zIndex: 1,
+          background: '#fff',
+        }"
+      >
+        <head-navigation></head-navigation>
+      </a-layout-header>
+      <a-layout>
+        <a-layout-sider theme="light">
+          <Conditions />
+          <hr />
+          <template v-for="(task, index) in tasks">
+            <Task :task="task" :key="index" :index="index" />
+          </template>
+        </a-layout-sider>
+        <a-layout-content :style="{ marginTop: '64px' }">
+          <Content />
+        </a-layout-content>
+      </a-layout>
+      <a-layout-footer>
+        <Footer />
+      </a-layout-footer>
+    </a-layout>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Conditions from "./components/conditions/conditions.vue";
+import HeadNavigation from "./components/head-navigation/head-navigation.vue";
+import { mapState } from "vuex";
+import Task from "./components/task/task";
+import Content from "./components/content/content.vue";
+import Footer from "./components/footer/footer.vue";
 
 export default {
-  name: 'App',
+  name: "App",
+  data() {
+    return {};
+  },
   components: {
-    HelloWorld
-  }
-}
+    HeadNavigation,
+    Conditions,
+    Task,
+    Content,
+    Footer,
+  },
+  computed: {
+    ...mapState(["tasks"]),
+  },
+};
 </script>
 
 <style>
-#app {
+/* #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
-}
+} */
 </style>
