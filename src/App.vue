@@ -24,10 +24,9 @@
           <Content />
         </a-layout-content>
       </a-layout>
-      <a-layout-footer>
-        <Footer />
-      </a-layout-footer>
+      <a-layout-footer> footer </a-layout-footer>
     </a-layout>
+    <Footer />
   </div>
 </template>
 

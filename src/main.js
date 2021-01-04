@@ -26,7 +26,37 @@ Vue.config.productionTip = false;
 Vue.prototype.$store = store;
 Vue.prototype.$message = message;
 
+Vue.directive('drag', {
+  bind: function (el) {
+    let tdiv = el;
+    tdiv.onmousedown = (e) => {
+      //获取鼠标点击下的位置
+      let mouseX = e.clientX;
+      let mouseY = e.clientY;
+
+      //获取当前元素left 和top的值
+      let tdivLeft =
+        window.getComputedStyle(tdiv)["left"].split("px")[0] * 1;
+      let tdivTop = window.getComputedStyle(tdiv)["top"].split("px")[0] * 1;
+      // console.log("tdivXY: ", "(", tdivLeft, ",", tdivTop, ")");
+
+      document.onmousemove = (e) => {
+        //偏移=原偏移+鼠标移动后位置-鼠标点击位置
+        let left = tdivLeft + e.clientX - mouseX;
+        let top = tdivTop + e.clientY - mouseY;
+        tdiv.style.left = left + "px";
+        tdiv.style.top = top + "px";
+      };
+      document.onmouseup = () => {
+        document.onmousemove = null;
+        document.onmouseup = null;
+      };
+    };
+  },
+})
+
 new Vue({
   render: h => h(App),
+
 }).$mount('#app')
 

@@ -2,11 +2,12 @@ export default {
     items: [],
     conditions: { arr: ['a', 'b', 'c', 'd', 'e', 'f'] },
     // tasks: { arr: ['Kill the Enemy'] },
-    tasks: [{ name: 'Kill the Enemy', goalConditions: [{ condition: 'a', state: false }] }, { name: 'Kill the Enemy2', goalConditions: [{ condition: 'a', state: false }] }],
-    stateActions: { arr: ['a'] },
+    tasks: [{ name: 'Kill the Enemy', goalConditions: [] }],
+    stateActions: [{ name: 'a', cost: 2, preConditions: [], postConditions: [] }],
     msgs: { arr: ['a', 'b', 'c', 'd', 'e', 'f'] },
 }
 
+// tasks: [{ name: 'Kill the Enemy', goalConditions: [{ condition: 'a', state: false }] }],
 /* var obj={
     arr:[
             {

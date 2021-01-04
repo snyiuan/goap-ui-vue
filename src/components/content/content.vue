@@ -1,9 +1,9 @@
 <template>
   <div class="code-box-demo">
-    <a-list :grid="{ gutter: 16, column: 4 }" :data-source="stateActions.arr">
-      <a-list-item slot="renderItem" slot-scope="item, index">
-        <action-item :item="item" :index="index"></action-item>
-      </a-list-item>
+    <a-list :grid="{ gutter: 16, column: 4 }" :data-source="stateActions">
+      <template slot="renderItem" slot-scope="action, index">
+        <action-item :item="action" :index="index"></action-item>
+      </template>
     </a-list>
   </div>
 </template>
