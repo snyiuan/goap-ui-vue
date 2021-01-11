@@ -8,14 +8,11 @@
           style="float: right; border-radius: 8px"
         ></a-button>
       </div>
-      <p>msgs0:{{ msgs[0] }}</p>
-      <p>msgs0:{{ msgs[0] }}</p>
-      <p>msgs0:{{ msgs[0] }}</p>
-      <p>msgs0:{{ msgs[0] }}</p>
-      <p>msgs0:{{ msgs[0] }}</p>
-      <p>msgs0:{{ msgs[0] }}</p>
       <template v-for="(msg, index) in msgs">
-        <a-input type="text" :key="index" v-model="msgs[index]">
+        <p :key="index">{{ msg }}--{index}}</p>
+      </template>
+      <template v-for="(msg, index) in msgs.arr">
+        <a-input type="text" :key="index" v-model="msgs.arr[index]">
           <a-icon slot="addonAfter" type="minus-circle" />
         </a-input>
       </template>

@@ -14,26 +14,21 @@
       </a-layout-header>
       <a-layout>
         <a-layout-sider theme="light">
-          <Conditions :conditions="conditions" />
+          <Conditions />
           <hr />
           <template v-for="(task, index) in tasks">
-            <Task
-              :task="task"
-              :key="index"
-              :index="index"
-              :conditions="conditions"
-            />
+            <Task :task="task" :key="index" :index="index" />
           </template>
         </a-layout-sider>
         <a-layout-content :style="{ marginTop: '64px' }">
-          <Content :conditions="conditions" />
+          <Content />
         </a-layout-content>
       </a-layout>
       <a-layout-footer>
         <Footer />
       </a-layout-footer>
     </a-layout>
-    <Footer :conditions="conditions" />
+    <Footer />
   </div>
 </template>
 
@@ -48,9 +43,7 @@ import Footer from "./components/footer/footer.vue";
 export default {
   name: "App",
   data() {
-    return {
-      conditions: ["a", "b", "c", "d", "e", "f"],
-    };
+    return {};
   },
   components: {
     HeadNavigation,
