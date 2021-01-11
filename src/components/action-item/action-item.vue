@@ -22,7 +22,7 @@
               size="small"
             ></a-button>
             <a-menu slot="overlay">
-              <template v-for="(condition, conditionIndex) in conditions.arr">
+              <template v-for="(condition, conditionIndex) in conditions">
                 <a-menu-item :key="conditionIndex">
                   <a @click.prevent="addPreCondition(conditionIndex)">{{
                     condition
@@ -39,7 +39,7 @@
             <a-row type="flex" justify="space-between">
               <a-col
                 ><a-checkbox v-model="condition.state">{{
-                  conditions.arr[condition.conditionIndex]
+                  conditions[condition.conditionIndex]
                 }}</a-checkbox></a-col
               >
               <a-col
@@ -67,7 +67,7 @@
               size="small"
             ></a-button>
             <a-menu slot="overlay">
-              <template v-for="(condition, conditionIndex) in conditions.arr">
+              <template v-for="(condition, conditionIndex) in conditions">
                 <a-menu-item :key="conditionIndex">
                   <a @click.prevent="addPostCondition(conditionIndex)">{{
                     condition
@@ -85,7 +85,7 @@
             <a-row type="flex" justify="space-between">
               <a-col
                 ><a-checkbox v-model="condition.state">{{
-                  conditions.arr[condition.conditionIndex]
+                  conditions[condition.conditionIndex]
                 }}</a-checkbox></a-col
               >
               <a-col
@@ -108,7 +108,10 @@
 <script>
 import { mapState } from "vuex";
 export default {
-  props: ["item", "index"],
+  props: ["item", "index", "conditions"],
+  mounted() {
+    console.log(this.conditions);
+  },
   methods: {
     addPreCondition(conditionIndex) {
       console.log("addPre");
@@ -134,7 +137,7 @@ export default {
     },
   },
   computed: {
-    ...mapState(["conditions", "stateActions"]),
+    ...mapState(["stateActions"]),
   },
 };
 </script>

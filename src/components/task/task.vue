@@ -20,7 +20,7 @@
       <a-dropdown :trigger="['hover']">
         <a-button size="small" type="link" icon="plus-circle"></a-button>
         <a-menu slot="overlay">
-          <template v-for="(condition, index) in conditions.arr">
+          <template v-for="(condition, index) in conditions">
             <a-menu-item :key="index">
               <a @click.prevent="addGoal(index)">{{ condition }}</a>
             </a-menu-item>
@@ -37,7 +37,7 @@
       >
         <a-list-item slot="renderItem" slot-scope="goal, index">
           <a-checkbox :index="index" v-model="goal.state">{{
-            conditions.arr[goal.conditionIndex]
+            conditions[goal.conditionIndex]
           }}</a-checkbox>
           <a-button
             type="link"
@@ -54,7 +54,7 @@
 <script>
 import { mapState } from "vuex";
 export default {
-  props: ["task", "index"],
+  props: ["task", "index", "conditions"],
   methods: {
     removeTask() {
       this.$store.dispatch("removeTask", this.index);
@@ -74,7 +74,7 @@ export default {
     },
   },
   computed: {
-    ...mapState(["conditions", "tasks"]),
+    ...mapState(["tasks"]),
   },
 };
 </script>

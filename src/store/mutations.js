@@ -2,25 +2,29 @@ import { ADDCONDITION, REMOVECONDITION, REMOVETASK, ADDACTION, REMOVEACTION, ADD
 
 export default {
     [ADDCONDITION](state, data) {
-        state.conditions.arr.push(data);
+        state.conditions.push(data);
     },
     [REMOVECONDITION](state, { index }) {
         state.stateActions.forEach(function (action) {
             action.preConditions = action.preConditions.filter(function (val) {
                 return val.conditionIndex != index;
             })
-            action.postConditions = action.preConditions.filter(function (val) {
+            action.postConditions = action.postConditions.filter(function (val) {
                 return val.conditionIndex != index;
             })
         })
-
+        console.log("before", state.tasks);
         state.tasks.forEach(function (task) {
             task.goalConditions = task.goalConditions.filter(function (val) {
                 return val.conditionIndex != index;
             })
         })
+        console.log("after", state.tasks);
+        console.log("conditions:", state.conditions)
+        console.log("statActions:", state.stateActions)
+        console.log("state", state);
+        // state.conditions.splice(index, 1);
 
-        state.conditions.arr.splice(index, 1);
 
     },
     [ADDGOAL](state, { name, index, vue }) {

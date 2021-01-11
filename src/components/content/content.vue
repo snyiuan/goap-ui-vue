@@ -2,7 +2,11 @@
   <div class="code-box-demo">
     <a-list :grid="{ gutter: 16, column: 4 }" :data-source="stateActions">
       <template slot="renderItem" slot-scope="action, index">
-        <action-item :item="action" :index="index"></action-item>
+        <action-item
+          :item="action"
+          :index="index"
+          :conditions="conditions"
+        ></action-item>
       </template>
     </a-list>
   </div>
@@ -13,6 +17,7 @@ import { mapState } from "vuex";
 import ActionItem from "../action-item/action-item.vue";
 export default {
   components: { ActionItem },
+  props: ["conditions"],
   computed: {
     ...mapState(["stateActions"]),
   },
