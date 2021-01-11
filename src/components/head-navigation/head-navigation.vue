@@ -16,7 +16,7 @@
       @cancel="handleCancel"
       @ok="handleOk"
     >
-      <a-input type="text" v-model="inputName" :placeholder="modalTitle" />
+      <a-input type="text" v-model="stateName" :aria-placeholder="modalTitle" />
     </a-modal>
   </div>
 </template>
@@ -27,7 +27,6 @@ export default {
     return {
       current: ["1"],
       stateName: "",
-      inputName: "",
       visible: false,
       addType: "",
     };
@@ -52,35 +51,25 @@ export default {
       this.stateName = "";
     },
     handleOk() {
+      var arr;
       if (this.addType === "Task") {
-        this.$store.dispatch("addTask", { name: this.inputName, vue: this });
+        arr = this.$store.state.tasks.arr;
       } else {
-        this.$store.dispatch("addAction", { name: this.inputName, vue: this });
+        arr = this.$store.state.stateActions.arr;
       }
-      this.addType = "";
-      this.inputName = "";
-      this.visible = false;
-
-      // var arr;
-      // if (this.addType === "Task") {
-      //   arr = this.$store.state.tasks;
-      // } else {
-      //   arr = this.$store.state.stateActions.arr;
-      // }
-      // let text = this.stateName;
-
-      // if (text) {
-      //   if (arr.indexOf(text) === -1) {
-      //     this.$store.dispatch("add" + this.addType, text);
-      //     this.stateName = "";
-      //     this.visible = false;
-      //   } else {
-      //     this.$message.info(this.addType + " name is repeated");
-      //   }
-      // } else {
-      //   this.handleCancel();
-      //   this.$message.info(this.addType + " name cat not be empty");
-      // }
+      let text = this.stateName;
+      if (text) {
+        if (arr.indexOf(text) === -1) {
+          this.$store.dispatch("add" + this.addType, text);
+          this.stateName = "";
+          this.visible = false;
+        } else {
+          this.$message.info(this.addType + " name is repeated");
+        }
+      } else {
+        this.handleCancel();
+        this.$message.info(this.addType + " name cat not be empty");
+      }
     },
   },
 };

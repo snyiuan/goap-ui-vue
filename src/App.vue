@@ -29,7 +29,9 @@
           <Content :conditions="conditions" />
         </a-layout-content>
       </a-layout>
-      <a-layout-footer> footer </a-layout-footer>
+      <a-layout-footer>
+        <Footer />
+      </a-layout-footer>
     </a-layout>
     <Footer :conditions="conditions" />
   </div>

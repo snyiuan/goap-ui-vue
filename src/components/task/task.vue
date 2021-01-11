@@ -3,21 +3,21 @@
     <a-row type="flex" justify="space-between">
       <a-col><a-icon type="star" theme="filled" />&nbsp;{{ task.name }}</a-col>
       <a-col>
-        <a-popconfirm
-          title="Are you sure delete this task"
-          placement="right"
-          ok-text="Yes"
-          cancel-text="No"
-          @confirm="removeTask"
-        >
-          <a-button size="small" type="link" icon="minus-circle"></a-button>
-        </a-popconfirm>
-      </a-col>
+        <a-button
+          @click="removeTask"
+          size="small"
+          type="link"
+          icon="minus-circle"
+        ></a-button
+      ></a-col>
     </a-row>
-    <a-input addonBefore="Name" v-model="tasks[index].name" />
+    <a-row type="flex" justify="space-between">
+      Name:
+      <a-input v-model="tasks[index].name" />
+    </a-row>
     <a-row type="flex" justify="space-between">
       <p>Goal Conditions</p>
-      <a-dropdown :trigger="['hover']">
+      <a-dropdown :trigger="['click']">
         <a-button size="small" type="link" icon="plus-circle"></a-button>
         <a-menu slot="overlay">
           <template v-for="(condition, index) in conditions">
@@ -28,16 +28,16 @@
         </a-menu>
       </a-dropdown>
     </a-row>
-    <div class="goal-conditions" v-if="task.goalConditions.length">
+    <div class="goalConditions">
       <a-list
         size="small"
         :split="false"
-        :data-source="task.goalConditions"
+        :data-source="goals"
         item-layout="horizontal"
       >
         <a-list-item slot="renderItem" slot-scope="goal, index">
-          <a-checkbox :index="index" v-model="goal.state">{{
-            conditions[goal.conditionIndex]
+          <a-checkbox :index="index" v-model="sig">{{
+            conditions.arr[goal]
           }}</a-checkbox>
           <a-button
             type="link"
@@ -54,23 +54,37 @@
 <script>
 import { mapState } from "vuex";
 export default {
-  props: ["task", "index", "conditions"],
+  props: ["task", "index"],
+  data() {
+    return {
+      goals: [],
+      sig: false,
+    };
+  },
   methods: {
     removeTask() {
       this.$store.dispatch("removeTask", this.index);
     },
-    addGoal(conditionIndex) {
-      this.$store.dispatch("addGoal", {
-        name: this.task.name,
-        index: conditionIndex,
-        vue: this,
-      });
+    addGoal(index) {
+      if (this.goals.indexOf(index) === -1) {
+        console.log("add arr:", index);
+        this.goals.push(index);
+      } else {
+        this.$message.info("goals are repeated");
+      }
     },
     removeGoal(index) {
-      this.task.goalConditions.splice(index, 1);
+      this.goals.splice(index, 1);
     },
     changeGoalState(val, val2) {
       console.log(val, val2);
+    },
+  },
+  watch: {
+    goals: {
+      handler: function (val, oldval) {
+        console.log("new:", val, "old", oldval);
+      },
     },
   },
   computed: {

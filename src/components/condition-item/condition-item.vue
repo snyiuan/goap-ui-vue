@@ -1,31 +1,15 @@
 <template>
-  <div>
-    <a-input type="text" @pressEnter="inputEnter" v-model="conditions[index]">
-      <a-popconfirm
-        slot="addonAfter"
-        title="Are you sure delete this condition"
-        ok-text="Yes"
-        cancel-text="No"
-        @confirm="deleteItem"
-        placement="right"
-      >
-        <a-button
-          type="link"
-          shape="circle"
-          icon="minus-circle"
-          size="small"
-        ></a-button>
-        <a-button
-          type="link"
-          shape="circle"
-          icon="setting"
-          @click.stop="clickSetting"
-          size="small"
-        ></a-button>
-      </a-popconfirm>
-    </a-input>
-    <a-modal> </a-modal>
-  </div>
+  <a-input type="text" v-model="conditions.arr[index]" allowClear>
+    <a-button
+      slot="suffix"
+      class="deleteBtn"
+      type="link"
+      shape="circle"
+      icon="minus-circle"
+      size="small"
+      @click="deleteItem(index)"
+    ></a-button>
+  </a-input>
 </template>
 
 <script>
@@ -38,17 +22,8 @@ export default {
   props: ["condition", "index", "conditions"],
   computed: {},
   methods: {
-    deleteItem() {
-      this.$store.dispatch("removeCondition", this.index);
-    },
-    clickSetting() {
-      console.log("clicksetting");
-    },
-    inputEnter() {
-      console.log("input enter");
-    },
-    iChange(v) {
-      console.log(v);
+    deleteItem(index) {
+      this.$store.dispatch("removeCondition", index);
     },
   },
 };
