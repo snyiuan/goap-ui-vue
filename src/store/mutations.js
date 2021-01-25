@@ -1,97 +1,114 @@
-import { ADDCONDITION, REMOVECONDITION, REMOVETASK, ADDACTION, REMOVEACTION, ADDTASK } from "./mutations-type"
+import {
+    ADDCONDITION, REMOVECONDITION,
+    ADDTASK, REMOVETASK,
+    ADDACTION, REMOVEACTION,
+    ADDGOAL,
+    ADDPRECONDITION, REMOVEPRECONDITION,
+    ADDPOSTCONDITION, REMOVEPOSTCONDITION,
+    ADDWORLDSTATE,
+    SETMAINTASK
+} from "./mutations-type"
 
 export default {
-    [ADDCONDITION](state, data) {
-        state.conditions.arr.push(data);
+    [ADDCONDITION](state, name) {
+        // if(state.conditions.find(val=>val.name===name)){
+        //
+        // }
+        state.conditions.push({ name: name, repeated: false });
     },
     [REMOVECONDITION](state, { index }) {
-<<<<<<< HEAD
-        state.conditions.arr.splice(index, 1);
-=======
-        state.stateActions.forEach(function (action) {
-            action.preConditions = action.preConditions.filter(function (val) {
-                return val.conditionIndex != index;
-            })
-            action.postConditions = action.preConditions.filter(function (val) {
-                return val.conditionIndex != index;
-            })
-        })
-
-        state.tasks.forEach(function (task) {
-            task.goalConditions = task.goalConditions.filter(function (val) {
-                return val.conditionIndex != index;
-            })
-        })
-
-        state.conditions.arr.splice(index, 1);
-
-    },
-    [ADDGOAL](state, { name, index, vue }) {
-        state.tasks.forEach(function (task) {
-            if (task.name === name) {
-                let contain = false;
-                task.goalConditions.forEach(function (val) {
-                    if (val.conditionIndex === index) {
-                        contain = true;
-                    }
-                });
-                if (!contain) {
-                    task.goalConditions.push({ conditionIndex: index, state: false })
-                } else {
-                    vue.$message.info("Goal Conditions are repeted")
+        const { stateActions, conditions, tasks } = state
+        stateActions.forEach(item => {
+            for (let i = 0; i < item.preConditions.length; i++) {
+                if (item.preConditions[i].index === index) {
+                    item.preConditions.splice(i, 1);
+                    i--;
+                } else if (item.preConditions[i].index > index) {
+                    item.preConditions[i].index--;
+                }
+            }
+            for (let i = 0; i < item.postConditions.length; i++) {
+                if (item.postConditions[i].index === index) {
+                    item.postConditions.splice(i, 1);
+                    i--;
+                } else if (item.postConditions[i].index > index) {
+                    item.postConditions[i].index--;
                 }
             }
         })
-    },
-    [ADDPRECONDITION](state, { name, index, vue }) {
-        state.stateActions.forEach(function (action) {
-            if (action.name === name) {
-                let contain = false;
-                action.preConditions.forEach(function (val) {
-
-                    if (val.conditionIndex === index) {
-                        console.log(val.conditionIndex, index)
-                        contain = true;
-                    }
-                });
-                if (!contain) {
-                    action.preConditions.push({ conditionIndex: index, state: false })
-                } else {
-                    vue.$message.info("Pre Conditions are repeted")
-                }
-
-            }
-        })
-    },
-    [ADDPOSTCONDITION](state, { name, index, vue }) {
-        state.stateActions.forEach(function (action) {
-            if (action.name === name) {
-                let contain = false;
-                action.postConditions.forEach(function (val) {
-                    if (val.conditionIndex === index) {
-                        contain = true;
-                    }
-                })
-                if (!contain) {
-                    action.postConditions.push({ conditionIndex: index, state: false })
-                } else {
-                    vue.$message.info("Pre Conditions are repeted")
+        tasks.forEach(task => {
+            for (let i = 0; i < task.goalConditions.length; i++) {
+                if (task.goalConditions[i].index === index) {
+                    console.log('splice');
+                    task.goalConditions.splice(i, 1);
+                    i--;
+                } else if (task.goalConditions[i].index > index) {
+                    console.log('------');
+                    task.goalConditions[i].index--;
                 }
             }
         })
->>>>>>> parent of ce9dc8f... temp
+        conditions.splice(index, 1);
+
     },
-    [ADDTASK](state, task) {
-        state.tasks.arr.push(task);
+    [ADDGOAL](state, { taskIndex, targetIndex, vue }) {
+        if (state.tasks[taskIndex].goalConditions.find(val => val.index === targetIndex)) {
+            vue.$message.info('Goal conditions are repeated!')
+        } else {
+            state.tasks[taskIndex].goalConditions.push({ index: targetIndex, checked: false })
+            state.tasks[taskIndex].goalConditions.sort((o, n) => o.index - n.index);
+        }
     },
-    [REMOVETASK](state, index) {
-        state.tasks.arr.splice(index, 1);
+    [ADDPRECONDITION](state, { actionIndex, targetIndex, vue }) {
+        if (state.stateActions[actionIndex].preConditions.find(val => val.index === targetIndex)) {
+            vue.$message.info("Pre Conditions are repeted");
+        } else {
+            state.stateActions[actionIndex].preConditions.push({ index: targetIndex, checked: false });
+            state.stateActions[actionIndex].preConditions.sort((o, n) => o.index - n.index);
+        }
     },
-    [ADDACTION](state, action) {
-        state.stateActions.arr.push(action);
+    [REMOVEPRECONDITION](state, { actionIndex, targetIndex }) {
+        state.stateActions[actionIndex].splice(targetIndex, 1);
     },
-    [REMOVEACTION](state, index) {
-        state.stateActions.arr.splice(index, 1);
+    [REMOVEPOSTCONDITION](state, { actionIndex, targetIndex }) {
+        state.stateActions[actionIndex].splice(targetIndex, 1)
+    },
+    [ADDPOSTCONDITION](state, { actionIndex, targetIndex, vue }) {
+        if (state.stateActions[actionIndex].postConditions.find(val => val.index === targetIndex)) {
+            vue.$message.info("Pre Conditions are repeted");
+        } else {
+            state.stateActions[actionIndex].postConditions.push({ index: targetIndex, checked: false });
+            state.stateActions[actionIndex].postConditions.sort((o, n) => o.index - n.index);
+        }
+    },
+    [ADDTASK](state, name) {
+        state.tasks.push({ name, main: false, goalConditions: [] });
+    },
+    [REMOVETASK](state, { taskIndex }) {
+        state.tasks.splice(taskIndex, 1);
+    },
+    [SETMAINTASK](state, { taskIndex }) {
+        let { tasks } = state
+        for (let i = 0; i < tasks.length; i++) {
+            if (i === taskIndex) {
+                tasks[i].main = !tasks[i].main;
+            } else {
+                tasks[i].main = false;
+            }
+        }
+    },
+    [ADDACTION](state, name) {
+        state.stateActions.push({ name, cost: 0, preConditions: [], postConditions: [] });
+    },
+    [REMOVEACTION](state, { actionIndex }) {
+        state.stateActions.splice(actionIndex, 1);
+    },
+    [ADDWORLDSTATE](state, { targetIndex, vue }) {
+        if (state.worldStates.find(val => val.index === targetIndex)) {
+            vue.$message.info('states are repeated!', 1)
+        } else {
+            state.worldStates.push({ index: targetIndex, checked: false });
+        }
     }
 }
 

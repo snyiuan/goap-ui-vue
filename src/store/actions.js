@@ -1,4 +1,12 @@
-import { ADDCONDITION, REMOVECONDITION, REMOVETASK, REMOVEACTION, ADDTASK, ADDACTION } from "./mutations-type"
+import {
+    ADDCONDITION, REMOVECONDITION,
+    ADDTASK, REMOVETASK, SETMAINTASK,
+    ADDACTION, REMOVEACTION,
+    ADDGOAL,
+    ADDPRECONDITION, REMOVEPRECONDITION,
+    ADDPOSTCONDITION, REMOVEPOSTCONDITION,
+    ADDWORLDSTATE,
+} from "./mutations-type"
 
 export default {
     addCondition({ commit }, data) {
@@ -7,16 +15,37 @@ export default {
     removeCondition({ commit }, index) {
         commit(REMOVECONDITION, { index })
     },
-    addTask({ commit }, task) {
-        commit(ADDTASK, task)
+    addGoal({ commit }, data) {
+        commit(ADDGOAL, data);
     },
-    removeTask({ commit }, index) {
-        commit(REMOVETASK, index)
+    addPreCondition({ commit }, data) {
+        commit(ADDPRECONDITION, data);
     },
-    addAction({ commit }, action) {
-        commit(ADDACTION, action);
+    removePreCondition({ commit }, data) {
+        commit(REMOVEPRECONDITION, data);
     },
-    removeAction({ commit }, index) {
-        commit(REMOVEACTION, index)
+    addPostCondition({ commit }, data) {
+        commit(ADDPOSTCONDITION, data);
+    },
+    removePostCondition({ commit }, data) {
+        commit(REMOVEPOSTCONDITION, data);
+    },
+    addTask({ commit }, name) {
+        commit(ADDTASK, name)
+    },
+    removeTask({ commit }, data) {
+        commit(REMOVETASK, data);
+    },
+    setMainTask({ commit }, data) {
+        commit(SETMAINTASK, data);
+    },
+    addAction({ commit }, name) {
+        commit(ADDACTION, name);
+    },
+    removeAction({ commit }, data) {
+        commit(REMOVEACTION, data)
+    },
+    addWorldState({ commit }, data) {
+        commit(ADDWORLDSTATE, data)
     }
 }

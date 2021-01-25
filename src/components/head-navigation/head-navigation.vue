@@ -1,23 +1,40 @@
 <template>
   <div>
-    <a-menu theme="light" mode="horizontal">
-      <a-menu-item key="1"> <a-icon type="mail" />Navigation One </a-menu-item>
-      <a-menu-item key="2" @click="AddAction">
-        <a-icon type="mail" />Add Action
-      </a-menu-item>
-      <a-menu-item key="3" @click="AddTask">
-        <a-icon type="mail" />Add Task
-      </a-menu-item>
-    </a-menu>
-
-    <a-modal
-      :title="modalTitle"
-      :visible="visible"
-      @cancel="handleCancel"
-      @ok="handleOk"
-    >
-      <a-input type="text" v-model="stateName" :aria-placeholder="modalTitle" />
-    </a-modal>
+    <div>
+      <a-button
+        class="btn"
+        type="primary"
+        shape="round"
+        @click="handleClick('TASK')"
+      >
+        Add Tasks
+      </a-button>
+      <a-button
+        class="btn"
+        type="primary"
+        shape="round"
+        @click="() => handleClick('ACTION')"
+      >
+        Add Actions
+      </a-button>
+      <a-button class="btn" type="primary" shape="round" @click="generator">
+        Generator
+      </a-button>
+    </div>
+    <div>
+      <a-modal
+        :title="modalTitle"
+        :visible="visible"
+        @cancel="handleCancel"
+        @ok="handleOk"
+      >
+        <a-input
+          type="text"
+          v-model="stateName"
+          :aria-placeholder="modalTitle"
+        />
+      </a-modal>
+    </div>
   </div>
 </template>
 
@@ -25,7 +42,6 @@
 export default {
   data() {
     return {
-      current: ["1"],
       stateName: "",
       visible: false,
       addType: "",
@@ -38,42 +54,42 @@ export default {
   },
 
   methods: {
-    AddAction() {
-      this.addType = "Action";
-      this.visible = true;
-    },
-    AddTask() {
-      this.addType = "Task";
-      this.visible = true;
-    },
-    handleCancel() {
-      this.visible = false;
-      this.stateName = "";
+    handleClick(type) {
+      console.log("handleClick");
+      if (type === "TASK") {
+        this.addType = "Task";
+        this.visible = true;
+      } else {
+        this.addType = "Action";
+        this.visible = true;
+      }
     },
     handleOk() {
-      var arr;
-      if (this.addType === "Task") {
-        arr = this.$store.state.tasks.arr;
-      } else {
-        arr = this.$store.state.stateActions.arr;
-      }
-      let text = this.stateName;
-      if (text) {
-        if (arr.indexOf(text) === -1) {
-          this.$store.dispatch("add" + this.addType, text);
-          this.stateName = "";
-          this.visible = false;
-        } else {
-          this.$message.info(this.addType + " name is repeated");
-        }
+      let name = this.stateName;
+      if (name) {
+        this.$store.dispatch("add" + this.addType, name);
+        this.stateName = "";
+        this.visible = false;
       } else {
         this.handleCancel();
-        this.$message.info(this.addType + " name cat not be empty");
+        this.$message.info(this.addType + " name can not be empty");
       }
+    },
+    generator() {
+      console.log("generator");
+    },
+
+    handleCancel() {
+      console.log("handlecancle");
+      this.visible = false;
+      this.stateName = "";
     },
   },
 };
 </script>
 
-<style>
+<style scope>
+.btn {
+  margin: 0px 16px;
+}
 </style>

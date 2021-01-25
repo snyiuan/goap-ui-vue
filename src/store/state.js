@@ -1,28 +1,10 @@
 export default {
-    items: [],
-    conditions: { arr: ['a', 'b', 'c', 'd', 'e', 'f'] },
-    // tasks: { arr: ['Kill the Enemy'] },
-<<<<<<< HEAD
-    tasks: [{ name: 'Kill the Enemy', goalConditions: [{ condition: 'a', state: false }] }, { name: 'Kill the Enemy2', goalConditions: [{ condition: 'a', state: false }] }],
-    stateActions: { arr: ['a'] },
-=======
-    tasks: [{ name: 'Kill the Enemy', goalConditions: [] }],
-    stateActions: [{ name: 'a', cost: 2, preConditions: [], postConditions: [] }],
->>>>>>> parent of ce9dc8f... temp
-    msgs: { arr: ['a', 'b', 'c', 'd', 'e', 'f'] },
+    conditions:
+        [{ name: 'condition a', repeated: false }, { name: 'condition b', repeated: false }, { name: 'condition c', repeated: false }, { name: 'condition d', repeated: false }],
+    tasks:
+        [{ name: 'task1', main: false, goalConditions: [] }],
+    stateActions:
+        [{ name: 'action1', cost: 0, preConditions: [], postConditions: [] }],
+    worldStates:
+        [],
 }
-
-/* var obj={
-    arr:[
-            {
-                name:"Kill the Enemy",
-                goalConditions:[
-                                    {
-                                        condition:'a',
-                                        state:false
-        }
-    ]
-    }
-    ],
-} */
-

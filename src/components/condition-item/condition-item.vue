@@ -1,23 +1,11 @@
 <template>
-<<<<<<< HEAD
-  <a-input type="text" v-model="conditions.arr[index]" allowClear>
-    <a-button
-      slot="suffix"
-      class="deleteBtn"
-      type="link"
-      shape="circle"
-      icon="minus-circle"
-      size="small"
-      @click="deleteItem(index)"
-    ></a-button>
-=======
-  <a-input type="text" @pressEnter="inputEnter" v-model="conditions.arr[index]">
+  <a-input type="text" v-model="conditions[index].name">
     <a-popconfirm
       slot="addonAfter"
       title="Are you sure delete this condition"
       ok-text="Yes"
       cancel-text="No"
-      @confirm="deleteItem"
+      @confirm="deleteItem(index)"
       placement="right"
     >
       <a-button
@@ -34,7 +22,6 @@
         size="small"
       ></a-button>
     </a-popconfirm>
->>>>>>> parent of ce9dc8f... temp
   </a-input>
 </template>
 

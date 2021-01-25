@@ -11,7 +11,7 @@
       ></a-button>
     </a-row>
 
-    <a-list size="small" :data-source="conditions.arr" item-layout="vertical">
+    <a-list size="small" :data-source="conditions" item-layout="vertical">
       <a-list-item slot="renderItem" slot-scope="condition, index">
         <condition-item :condition="condition" :index="index" />
       </a-list-item>
@@ -55,7 +55,7 @@ export default {
     handleOk() {
       let condition = this.conditionText;
       if (condition) {
-        if (this.conditions.arr.indexOf(condition) === -1) {
+        if (this.conditions.indexOf(condition) === -1) {
           this.$store.dispatch("addCondition", condition);
           this.conditionText = "";
           this.visible = false;

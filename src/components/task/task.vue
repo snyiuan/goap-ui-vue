@@ -1,7 +1,20 @@
 <template>
-  <div class="m-task">
+  <div
+    class="m-task"
+    :style="{ border: task.main ? '1px solid green' : '1px solid #1890ff' }"
+  >
     <a-row type="flex" justify="space-between">
-      <a-col><a-icon type="star" theme="filled" />&nbsp;{{ task.name }}</a-col>
+      <a-col>
+        <!-- <a-button @click="setMain" size="small" icon="star" type="link" /> -->
+        <a-icon
+          @click="setMainTask"
+          type="star"
+          :style="{ color: '#1890ff' }"
+          :theme="task.main ? 'filled' : 'outlined'"
+        />
+        <!-- <a-icon type="star" /> -->
+        &nbsp;{{ task.name }}
+      </a-col>
       <a-col>
         <a-button
           @click="removeTask"
@@ -15,84 +28,25 @@
       Name:
       <a-input v-model="tasks[index].name" />
     </a-row>
-    <a-row type="flex" justify="space-between">
-      <p>Goal Conditions</p>
-      <a-dropdown :trigger="['click']">
-        <a-button size="small" type="link" icon="plus-circle"></a-button>
-        <a-menu slot="overlay">
-          <template v-for="(condition, index) in conditions.arr">
-            <a-menu-item :key="index">
-              <a @click.prevent="addGoal(index)">{{ condition }}</a>
-            </a-menu-item>
-          </template>
-        </a-menu>
-      </a-dropdown>
-    </a-row>
-    <div class="goalConditions">
-      <a-list
-        size="small"
-        :split="false"
-        :data-source="goals"
-        item-layout="horizontal"
-      >
-        <a-list-item slot="renderItem" slot-scope="goal, index">
-<<<<<<< HEAD
-          <a-checkbox :index="index" v-model="sig">{{
-            conditions.arr[goal]
-=======
-          <a-checkbox :index="index" v-model="goal.state">{{
-            conditions.arr[goal.conditionIndex]
->>>>>>> parent of ce9dc8f... temp
-          }}</a-checkbox>
-          <a-button
-            type="link"
-            icon="minus-circle"
-            size="small"
-            @click="removeGoal(index)"
-          ></a-button>
-        </a-list-item>
-      </a-list>
-    </div>
+    <goal-conditions
+      :goalConditions="task.goalConditions"
+      :taskIndex="index"
+    ></goal-conditions>
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
+import GoalConditions from "./goal-conditions.vue";
 export default {
+  components: { GoalConditions },
   props: ["task", "index"],
-<<<<<<< HEAD
-  data() {
-    return {
-      goals: [],
-      sig: false,
-    };
-  },
-=======
->>>>>>> parent of ce9dc8f... temp
   methods: {
+    setMainTask() {
+      this.$store.dispatch("setMainTask", { taskIndex: this.index });
+    },
     removeTask() {
-      this.$store.dispatch("removeTask", this.index);
-    },
-    addGoal(index) {
-      if (this.goals.indexOf(index) === -1) {
-        console.log("add arr:", index);
-        this.goals.push(index);
-      } else {
-        this.$message.info("goals are repeated");
-      }
-    },
-    removeGoal(index) {
-      this.goals.splice(index, 1);
-    },
-    changeGoalState(val, val2) {
-      console.log(val, val2);
-    },
-  },
-  watch: {
-    goals: {
-      handler: function (val, oldval) {
-        console.log("new:", val, "old", oldval);
-      },
+      this.$store.dispatch("removeTask", { taskIndex: this.index });
     },
   },
   computed: {
@@ -104,6 +58,8 @@ export default {
 <style>
 .m-task {
   padding: 10px;
-  border: solid 1px rgb(0, 140, 255);
+  /* border: solid 1px rgba(0, 140, 255, 0.884); */
+
+  margin: 1px 0;
 }
 </style>
