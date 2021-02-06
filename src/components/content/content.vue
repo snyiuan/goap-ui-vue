@@ -1,6 +1,9 @@
 <template>
   <div class="code-box-demo">
-    <a-list :grid="{ gutter: 16, column: 4 }" :data-source="stateActions">
+    <a-list
+      :grid="{ gutter: 16, xs: 1, sm: 2, md: 4, lg: 4, xl: 6, xxl: 3 }"
+      :data-source="stateActions"
+    >
       <template slot="renderItem" slot-scope="action, index">
         <action-item :item="action" :index="index"></action-item>
       </template>

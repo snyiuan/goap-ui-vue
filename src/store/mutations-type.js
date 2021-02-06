@@ -1,5 +1,6 @@
 export const ADDCONDITION = 'add_condition'
 export const REMOVECONDITION = 'remove_condition'
+export const CHANGECONDITION = 'change_condition'
 
 export const ADDTASK = 'add_task'
 export const REMOVETASK = 'remove_task'
@@ -15,4 +16,7 @@ export const ADDPOSTCONDITION = 'add_post_condition'
 export const REMOVEPOSTCONDITION = 'remove_post_condition'
 
 export const ADDWORLDSTATE = 'add_world_state'
+export const REMOVEWORLDSTATE = 'remove_world_state'
+
+export const GENERATERESULTS = 'generate_results'
 

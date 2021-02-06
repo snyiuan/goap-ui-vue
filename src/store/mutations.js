@@ -6,15 +6,20 @@ import {
     ADDPRECONDITION, REMOVEPRECONDITION,
     ADDPOSTCONDITION, REMOVEPOSTCONDITION,
     ADDWORLDSTATE,
-    SETMAINTASK
+    SETMAINTASK,
+    CHANGECONDITION,
+    GENERATERESULTS,
+    REMOVEWORLDSTATE
 } from "./mutations-type"
+import { Action, State, plan_ui } from '../generate/kgoap.esm'
 
 export default {
-    [ADDCONDITION](state, name) {
-        // if(state.conditions.find(val=>val.name===name)){
-        //
-        // }
-        state.conditions.push({ name: name, repeated: false });
+    [ADDCONDITION](state, { name, vue }) {
+        if (state.conditions.find(val => val.name === name)) {
+            vue.$message.info("Repeat conditions!")
+        } else {
+            state.conditions.push({ name: name, repeated: false });
+        }
     },
     [REMOVECONDITION](state, { index }) {
         const { stateActions, conditions, tasks } = state
@@ -51,6 +56,14 @@ export default {
         conditions.splice(index, 1);
 
     },
+    [CHANGECONDITION](state, { conditionIndex, conditionName, vue }) {
+        const { conditions } = state
+        if (conditions.find(val => val.name === conditionName)) {
+            vue.$message.info("Repeat conditions.")
+        } else {
+            conditions[conditionIndex].name = conditionName
+        }
+    },
     [ADDGOAL](state, { taskIndex, targetIndex, vue }) {
         if (state.tasks[taskIndex].goalConditions.find(val => val.index === targetIndex)) {
             vue.$message.info('Goal conditions are repeated!')
@@ -68,10 +81,10 @@ export default {
         }
     },
     [REMOVEPRECONDITION](state, { actionIndex, targetIndex }) {
-        state.stateActions[actionIndex].splice(targetIndex, 1);
+        state.stateActions[actionIndex].preConditions.splice(targetIndex, 1);
     },
     [REMOVEPOSTCONDITION](state, { actionIndex, targetIndex }) {
-        state.stateActions[actionIndex].splice(targetIndex, 1)
+        state.stateActions[actionIndex].postConditions.splice(targetIndex, 1)
     },
     [ADDPOSTCONDITION](state, { actionIndex, targetIndex, vue }) {
         if (state.stateActions[actionIndex].postConditions.find(val => val.index === targetIndex)) {
@@ -108,7 +121,57 @@ export default {
             vue.$message.info('states are repeated!', 1)
         } else {
             state.worldStates.push({ index: targetIndex, checked: false });
+            state.worldStates.sort((o, n) => o.index - n.index);
         }
+    },
+    [REMOVEWORLDSTATE](state, { index }) {
+        state.worldStates.splice(index, 1);
+    },
+    [GENERATERESULTS](state, { vue }) {
+        const { worldStates, conditions, tasks, stateActions } = state
+        let initial_state = new State();
+        let goal_state = new State();
+        let allowed_actions = new Array;
+        worldStates.forEach(val => {
+            initial_state.set(conditions[val.index].name, val.checked)
+        })
+
+        tasks.forEach(task => {
+            if (task.main) {
+                task.goalConditions.forEach(val => {
+                    goal_state.set(conditions[val.index].name, val.checked)
+                })
+            }
+        })
+        console.log('goalstate', goal_state);
+        if (goal_state.size === 0) {
+            vue.$message.info('Please select a main tasks', 1)
+        }
+        stateActions.forEach(v => {
+            let pre_conditions = new State();
+            let post_conditions = new State();
+            v.preConditions.forEach(pre => {
+                pre_conditions.set(conditions[pre.index].name, pre.checked);
+            })
+            v.postConditions.forEach(post => {
+                post_conditions.set(conditions[post.index].name, post.checked);
+            })
+            allowed_actions.push(new Action(v.name, v.cost, pre_conditions, post_conditions));
+        })
+        var results = plan_ui(initial_state, goal_state, allowed_actions)
+        state.results = results;
     }
 }
 
+// export declare class State extends Map<string, any> {
+//     get(key: string): any;
+//     insert(key: string, val: any): this;
+// }
+// export declare class Action {
+//     name: string;
+//     cost: number;
+//     pre_conditions: State;
+//     post_conditions: State;
+//     constructor(name: string, cost: number, pre_conditions: State, post_conditions: State);
+// }
+// export declare function plan(initial_state: State, goal_state: State, allowed_actions: Array<Action>): Array<string>;

@@ -2,10 +2,10 @@
   <div>
     <Conditions />
     <hr />
-    <world-state></world-state>
     <template v-for="(task, index) in tasks">
       <Task :task="task" :key="index" :index="index" />
     </template>
+    <world-state></world-state>
   </div>
 </template>
 

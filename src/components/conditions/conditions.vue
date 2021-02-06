@@ -56,7 +56,7 @@ export default {
       let condition = this.conditionText;
       if (condition) {
         if (this.conditions.indexOf(condition) === -1) {
-          this.$store.dispatch("addCondition", condition);
+          this.$store.dispatch("addCondition", { name: condition, vue: this });
           this.conditionText = "";
           this.visible = false;
         } else {

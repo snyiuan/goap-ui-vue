@@ -6,6 +6,9 @@ import {
     ADDPRECONDITION, REMOVEPRECONDITION,
     ADDPOSTCONDITION, REMOVEPOSTCONDITION,
     ADDWORLDSTATE,
+    CHANGECONDITION,
+    GENERATERESULTS,
+    REMOVEWORLDSTATE,
 } from "./mutations-type"
 
 export default {
@@ -14,6 +17,9 @@ export default {
     },
     removeCondition({ commit }, index) {
         commit(REMOVECONDITION, { index })
+    },
+    changeCondition({ commit }, data) {
+        commit(CHANGECONDITION, data)
     },
     addGoal({ commit }, data) {
         commit(ADDGOAL, data);
@@ -47,5 +53,11 @@ export default {
     },
     addWorldState({ commit }, data) {
         commit(ADDWORLDSTATE, data)
+    },
+    removeWorldState({ commit }, data) {
+        commit(REMOVEWORLDSTATE, data);
+    },
+    generateResults({ commit }, data) {
+        commit(GENERATERESULTS, data)
     }
 }

@@ -5,6 +5,8 @@ export default {
         [{ name: 'task1', main: false, goalConditions: [] }],
     stateActions:
         [{ name: 'action1', cost: 0, preConditions: [], postConditions: [] }],
-    worldStates:
-        [],
+    worldStates: [],
+    results: [
+
+    ],
 }

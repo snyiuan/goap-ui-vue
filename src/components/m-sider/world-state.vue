@@ -43,10 +43,11 @@ export default {
         vue: this,
       });
     },
+    removeWorldState(index) {
+      this.$store.dispatch("removeWorldState", { index });
+    },
   },
-  removeWorldState(index) {
-    console.log(index);
-  },
+
   computed: {
     ...mapState(["conditions", "worldStates"]),
   },

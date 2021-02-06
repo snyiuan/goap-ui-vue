@@ -39,6 +39,7 @@
 </template>
 
 <script>
+// const aaa = require("../../generate/kgoap.js");
 export default {
   data() {
     return {
@@ -52,10 +53,8 @@ export default {
       return "Please enter " + this.addType + " name";
     },
   },
-
   methods: {
     handleClick(type) {
-      console.log("handleClick");
       if (type === "TASK") {
         this.addType = "Task";
         this.visible = true;
@@ -76,11 +75,9 @@ export default {
       }
     },
     generator() {
-      console.log("generator");
+      this.$store.dispatch("generateResults", { vue: this });
     },
-
     handleCancel() {
-      console.log("handlecancle");
       this.visible = false;
       this.stateName = "";
     },
